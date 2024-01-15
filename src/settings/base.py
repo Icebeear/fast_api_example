@@ -13,4 +13,6 @@ class Base(DeclarativeBase):
         """
         return f"{cls.__name__.lower()}s"
     
+    # __table_args__ = {'extend_existing': False}  
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

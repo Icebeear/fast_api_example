@@ -4,10 +4,10 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 from src.settings.base import Base
-from settings.config import settings
+from src.settings.config import settings
 
 from src.task.models import *
-from src.user.models import * 
+from src.auth.models import * 
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.db_url)
