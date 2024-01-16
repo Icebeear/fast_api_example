@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-from pydantic import BaseModel
 from pydantic import Field
 from pydantic_settings import BaseSettings
 
@@ -35,12 +34,6 @@ headers = [
     "Authorization",
 ]
 
-# class AuthJWT(BaseModel):
-#     private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
-#     public_key_path: Path = BASE_DIR / "certs" / "jwt-public.pem"
-#     algorithm: str = "RS256"
-#     access_token_expire_minutes: int = 15
-    
 
 class AppSettings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
@@ -51,11 +44,16 @@ class AppSettings(BaseSettings):
     cors_allow_credentials: bool = Field(default=True, exclude=True)
     cors_allow_methods: list[str] = Field(default=methods, exclude=True)
     cors_allow_headers: list[str] = Field(default=headers, exclude=True)
-    # auth_jwt: AuthJWT = AuthJWT()
+
+    private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 15
+    
+
+settings = AppSettings()
 
 '''
 миграции не работают если в url есть +asyncpg 
 но если после миграций не добавить +asyncpg то приложение даже не запуститься, 
 потому что круды написано асинхронно
 '''
-settings = AppSettings()

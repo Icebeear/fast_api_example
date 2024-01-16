@@ -1,7 +1,5 @@
-from pydantic import BaseModel, Field, EmailStr, SecretStr
+from pydantic import BaseModel, Field, EmailStr
 from typing import Annotated
-from src.task.schemas import TaskCreate
-
 
 class User(BaseModel):
     username: Annotated[str, Field(min_length=3, max_length=20)]
@@ -9,11 +7,6 @@ class User(BaseModel):
     full_name: str | None = None 
     email: EmailStr | None = None 
     active: bool = True 
-    # tasks: list[TaskCreate] | None = []
-
-
-class UserInDB(User):
-    hashed_password: str
 
 
 class Token(BaseModel):
@@ -23,5 +16,3 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
-
-

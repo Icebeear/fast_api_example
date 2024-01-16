@@ -1,13 +1,13 @@
 from fastapi import HTTPException
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select
 
 from src.task.models import Task
 from src.task import schemas
 
 
-async def create_task(task: schemas.TaskCreate, session: AsyncSession):
+async def create_task(task: schemas.Task, session: AsyncSession):
     query = insert(Task).values(**task.model_dump())
     await session.execute(query)
     await session.commit()
@@ -34,13 +34,13 @@ async def get_task_by_id(task_id: int, session: AsyncSession):
     return result.scalars().first()
 
 
-async def update_task_by_id(task: schemas.TaskCreate, session: AsyncSession):
+async def update_task_by_id(task: schemas.Task, session: AsyncSession):
     task.is_complete = not task.is_complete
     await session.commit()
     return task 
 
 
-async def delete_task(task: schemas.TaskCreate, session: AsyncSession):
+async def delete_task(task: schemas.Task, session: AsyncSession):
     await session.delete(task)
     await session.commit()
     return {"response": f"Task with id {task.id} was successfully deleted"}

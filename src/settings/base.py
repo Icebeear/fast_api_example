@@ -15,4 +15,4 @@ class Base(DeclarativeBase):
     
     # __table_args__ = {'extend_existing': False}  
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    # id: Mapped[int] = mapped_column(primary_key=True)

@@ -1,32 +1,22 @@
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
-
-from fastapi import APIRouter, Depends, FastAPI, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pydantic import BaseModel
-from src.settings.database import get_async_session
+from jose import JWTError, jwt
 
-from src.auth import crud 
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.auth.schemas import Token, TokenData, User, UserInDB
-from sqlalchemy.orm import Session
-# to get a string like this run:
-# openssl rand -hex 32
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
-ALGORITHM = "HS256"
+
+from src.settings.database import get_async_session
+from src.settings.config import settings
+from src.auth import crud 
+from src.auth.schemas import TokenData, User
 
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "$2b$12$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36WQoeG6Lruj3vjPGga31lW",
-        "disabled": False,
-    }
-}
+SECRET_KEY = settings.private_key_path.read_text()
+ALGORITHM = settings.algorithm
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

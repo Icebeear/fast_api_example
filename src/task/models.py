@@ -1,9 +1,10 @@
-from sqlalchemy import Integer, String, Boolean, ForeignKey
+from sqlalchemy import String, Boolean, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 from src.settings.base import Base
 from datetime import date
 
 class Task(Base):
+    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     description: Mapped[str] = mapped_column(String)
     is_complete: Mapped[bool] = mapped_column(Boolean)
